@@ -56,7 +56,7 @@ public class BasicConnectionPool implements ConnectionPool {
 
     @Override
     public String getUrl() throws IOException {
-        return Utils.getDbParamsFromProps("datasource.driver") +
+        return Utils.getDbParamsFromProps("datasource.url") +
                 Utils.getDbParamsFromProps("datasource.path");
     }
 

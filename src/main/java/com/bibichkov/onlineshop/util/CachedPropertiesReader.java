@@ -19,8 +19,7 @@ public class CachedPropertiesReader {
     private Properties readProperties() {
         // readLogic
         ConnectionPool connection = BasicConnectionPool.create(
-                Utils.getDbParamsFromProps("datasource.driver") +
-                        Utils.getDbParamsFromProps("datasource.path"),
+                Utils.getDbParamsFromProps("datasource.url"),
                 Utils.getDbParamsFromProps("datasource.username"),
                 Utils.getDbParamsFromProps("datasource.password"));
         this.cachedProperties = null;
