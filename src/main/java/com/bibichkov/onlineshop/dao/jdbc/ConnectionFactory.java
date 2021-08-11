@@ -1,6 +1,8 @@
 package com.bibichkov.onlineshop.dao.jdbc;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Properties;
 
 public class ConnectionFactory {
@@ -15,14 +17,21 @@ public class ConnectionFactory {
     }
 
     public Connection getConnection() {
-        Connection connection = connectionPool
-                .remove(connectionPool.size() - 1);
-        usedConnections.add(connection);
-        return connection;
+        try (Connection connection = DriverManager.getConnection(url, username, password)){
+            return connection;
+        } catch (SQLException e) {
+            throw new RuntimeException("SQLite connection problem", e);
+        }
     }
 
-    public boolean releaseConnection(Connection connection) {
-        connectionPool.add(connection);
-        return usedConnections.remove(connection);
+    public void closeConnection(Connection connection) {
+
+        if (connection == null) return;
+
+        try{
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException("Closing connection problem", e);
+        }
     }
 }
