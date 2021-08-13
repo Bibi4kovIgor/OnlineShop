@@ -1,11 +1,14 @@
 package com.bibichkov.onlineshop.util;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 public class CachedPropertiesReader {
     private final String path;
 
-    private Properties cachedProperties;
+    private final Properties cachedProperties;
 
     public CachedPropertiesReader(String path) {
         this.path = path;
@@ -17,12 +20,12 @@ public class CachedPropertiesReader {
     }
 
     private Properties readProperties() {
-        // readLogic
-        ConnectionPool connection = BasicConnectionPool.create(
-                Utils.getDbParamsFromProps("datasource.url"),
-                Utils.getDbParamsFromProps("datasource.username"),
-                Utils.getDbParamsFromProps("datasource.password"));
-        this.cachedProperties = null;
-        return null;
+        try (InputStream inputStream = new FileInputStream(path)){
+            cachedProperties.load(inputStream);
+            return cachedProperties;
+        }
+        catch (IOException e){
+            throw new RuntimeException("Read properties error", e);
+        }
     }
 }

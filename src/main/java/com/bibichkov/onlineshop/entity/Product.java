@@ -9,6 +9,4 @@ public class Product {
     Long id;
     double price;
     String name;
-
-
 }
